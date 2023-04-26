@@ -2,19 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
 
 body {
   color: rgb(var(--foreground-rgb));
@@ -24,4 +11,39 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+@keyframes expand {
+  0% {
+    /* width: 50%; */
+  }
+  25% {
+    /* width: 100%;   */
+    /* background-color: red; */
+    transform: scaleX(3);
+    
+  }
+  50% {
+    /* width: 50%; */
+    /* background-color: blue; */
+    transform: scaleX(1);
+    
+    /* transform: translateX(100%); */
+  }
+  75% {
+    /* width: 100%; */
+    /* background-color: red; */
+    transform: scaleX(3);
+
+    /* transform: scaleX(300%); */
+  }
+  100% {
+    /* width: 50%; */
+    /* background-color: green; */
+    /* transform: translateX(100%); */
+  }
+}
+
+.animate-grow {
+  animation: expand 10s linear infinite;
 }
