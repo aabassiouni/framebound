@@ -24,12 +24,14 @@ const roboto_mono = Roboto_Mono({
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={inter.className}>
-            <body className="">
+            <body className="min-h-screen">
                 <Navbar />
                 {children}
+                
                 <Footer />
-                <Analytics />
+                <Analytics/>
             </body>
+            
         </html>
     )
 }

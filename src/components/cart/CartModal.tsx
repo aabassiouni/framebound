@@ -1,35 +1,68 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import CartItem from './CartItem'
-// import { XMarkIcon } from '@heroicons/react/24/outline'
+import { useEffect } from 'react';
+import { FinalCartItem, RedisCart } from './Cart';
+import Price from '../price';
+import type Stripe from 'stripe';
 
-const products = [
-    {
-        id: 1,
-        name: 'Throwback Hip Bag',
-        href: '#',
-        color: 'Salmon',
-        price: '$90.00',
-        quantity: 1,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-        imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-    },
-    {
-        id: 2,
-        name: 'Medium Stuff Satchel',
-        href: '#',
-        color: 'Blue',
-        price: '$32.00',
-        quantity: 1,
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-        imageAlt:
-            'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-    },
-    // More products...
-]
+// const products = [
+//     {
+//         id: 1,
+//         name: 'Throwback Hip Bag',
+//         href: '#',
+//         color: 'Salmon',
+//         price: '$90.00',
+//         quantity: 1,
+//         imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
+//         imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
+//     },
+//     {
+//         id: 2,
+//         name: 'Medium Stuff Satchel',
+//         href: '#',
+//         color: 'Blue',
+//         price: '$32.00',
+//         quantity: 1,
+//         imageSrc: 'https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
+//         imageAlt:
+//             'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
+//     },
+//     // More products...
+// ]
 
-export default function CartModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function CartModal({ isOpen, cart,  onClose }: { isOpen: boolean, cart: FinalCartItem[] | null , onClose: () => void }) {
     //   const [open, setOpen] = useState(true)
+    const [total, setTotal] = useState(0)
+
+    function calculateTotal() {
+        let result = 0
+        if (!cart) return
+        
+    
+
+        
+        if (!cart) return
+
+        cart.forEach((item: FinalCartItem) => {
+            console.log("type of item.product.default_price is ", typeof item.product.default_price)
+            if (typeof item.product.default_price === 'object'){
+                if( item?.product?.default_price?.unit_amount === undefined) return
+                // item.product.default_price = JSON.parse(item.product.default_price);
+                result += (item?.product?.default_price?.unit_amount ?? 0) * item.quantity
+
+            } else {
+                // result += item?.product?.default_price?.unit_amount * item.quantity
+            }
+        })
+        setTotal(result)
+    }
+
+    useEffect(() => {
+        calculateTotal()
+    }, [cart])
+
+   
 
     return (
         <Transition.Root show={isOpen} as={Fragment}>
@@ -82,8 +115,8 @@ export default function CartModal({ isOpen, onClose }: { isOpen: boolean; onClos
                                                             <path
                                                                 d="M12.8536 2.85355C13.0488 2.65829 13.0488 2.34171 12.8536 2.14645C12.6583 1.95118 12.3417 1.95118 12.1464 2.14645L7.5 6.79289L2.85355 2.14645C2.65829 1.95118 2.34171 1.95118 2.14645 2.14645C1.95118 2.34171 1.95118 2.65829 2.14645 2.85355L6.79289 7.5L2.14645 12.1464C1.95118 12.3417 1.95118 12.6583 2.14645 12.8536C2.34171 13.0488 2.65829 13.0488 2.85355 12.8536L7.5 8.20711L12.1464 12.8536C12.3417 13.0488 12.6583 13.0488 12.8536 12.8536C13.0488 12.6583 13.0488 12.3417 12.8536 12.1464L8.20711 7.5L12.8536 2.85355Z"
                                                                 fill="black"
-                                                                fill-rule="evenodd"
-                                                                clip-rule="evenodd"
+                                                                fillRule="evenodd"
+                                                                clipRule="evenodd"
                                                             ></path>
                                                         </svg>
                                                         {/* <XMarkIcon className="h-6 w-6" aria-hidden="true" /> */}
@@ -94,8 +127,8 @@ export default function CartModal({ isOpen, onClose }: { isOpen: boolean; onClos
                                             <div className="mt-8">
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                                        {products.map((product) => (
-                                                            <CartItem key={product.id} product={product} />
+                                                        {cart && cart.map((item, index) => (
+                                                            <CartItem key={index}  item={item}  />
                                                         ))}
                                                     </ul>
                                                 </div>
@@ -105,7 +138,8 @@ export default function CartModal({ isOpen, onClose }: { isOpen: boolean; onClos
                                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                 <p>Subtotal</p>
-                                                <p>$262.00</p>
+                                                {/* <p>$262.00</p> */}
+                                                <Price amount={total} currencyCode='USD'/>
                                             </div>
                                             <p className="mt-0.5 text-sm text-gray-500">
                                                 Shipping and taxes calculated at checkout.
@@ -119,11 +153,11 @@ export default function CartModal({ isOpen, onClose }: { isOpen: boolean; onClos
                                                 </a>
                                             </div>
                                             <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                                                <p>
+                                                <p className=''>
                                                     or
                                                     <button
                                                         type="button"
-                                                        className="font-medium text-black hover:text-indigo-500"
+                                                        className="font-medium ml-1 text-black hover:text-indigo-500"
                                                         onClick={() => onClose()}
                                                     >
                                                         Continue Shopping

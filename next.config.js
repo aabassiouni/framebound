@@ -4,7 +4,9 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['tailwindui.com'],
+    domains: ['tailwindui.com',
+    's3.us-east-2.amazonaws.com'
+  ],
   },
   // reactStrictMode: true,
 }
