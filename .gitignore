@@ -7,7 +7,8 @@
 
 # testing
 /coverage
-
+/testing
+/images
 # next.js
 /.next/
 /out/
@@ -33,4 +34,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-src/app/api/checkout_sessions/route.ts

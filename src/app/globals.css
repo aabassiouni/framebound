@@ -53,3 +53,76 @@ rect {
 .animate-grow {
   animation: expand 10s linear infinite;
 }
+
+/* .btn-link {
+  position: relative;
+  display: inline-block;
+  color: #281130;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  z-index: 1;
+}
+.btn-link:before, .btn-link:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.btn-link:before {
+  background-color: #00ffff;
+  z-index: -1;
+}
+.btn-link:after {
+  background-color: #ff00ff;
+  z-index: -2;
+}
+.btn-link:hover .link-inner {
+  -webkit-animation: glitchy 0.3s ease 1;
+          animation: glitchy 0.3s ease 1;
+}
+.btn-link:hover:before {
+  -webkit-animation: glitchy 0.3s ease 0.3s ;
+          animation: glitchy 0.3s ease 0.3s ;
+}
+.btn-link:hover:after {
+  animation: glitchy 0.3s ease  reverse;
+}
+
+@keyframes glitchy {
+  0% {
+    transform: translate(-2px, 2px);
+  }
+  25% {
+    transform: translate(-2px, -2px);
+  }
+  50% {
+    transform: translate(2px, 2px);
+  }
+  75% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(-2px, 2px);
+  }
+}
+
+@-webkit-keyframes glitchy {
+  0% {
+    transform: translate(-2px, 2px);
+  }
+  25% {
+    transform: translate(-2px, -2px);
+  }
+  50% {
+    transform: translate(2px, 2px);
+  }
+  75% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(-2px, 2px);
+  }
+} */

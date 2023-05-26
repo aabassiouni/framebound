@@ -1,19 +1,22 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import React, { useTransition } from 'react'
-import { useCookies } from 'react-cookie'
-import type { Stripe } from 'stripe'
+import React, { useState, useTransition } from 'react'
+import LoadingSpinner from './LoadingSpinner'
 
 function AddToCartBtn({ product }: { product: string }) {
     const router = useRouter()
-    const [cookies, setCookie] = useCookies(['cartID'])
     const [isPending, startTransition] = useTransition()
+    const [adding, setAdding] = useState(false)
+    
+    const isMutating = isPending || adding;
 
     async function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-        console.log('adding to cart:', product);
         e.preventDefault();
-        const cartID = cookies['cartID'];
+
+        console.log('adding to cart:', product);
+        setAdding(true)
+
         const productID = product;
         const response = await fetch(`/api/cart`, {
             method: 'POST',
@@ -21,7 +24,6 @@ function AddToCartBtn({ product }: { product: string }) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                cartID,
                 item: productID,
             }),
         });
@@ -31,8 +33,8 @@ function AddToCartBtn({ product }: { product: string }) {
             alert(data.error)
             return
         }
-        
-        console.log('data: ', data);
+
+        setAdding(false)
 
         startTransition(() => {
             router.refresh()
@@ -40,8 +42,10 @@ function AddToCartBtn({ product }: { product: string }) {
     }
 
     return (
-        <button type="button" onClick={handleClick} className=" m-3 mr-auto border-2 p-2 border-black">
-            add to cart
+        <button type="button" disabled={isMutating} onClick={handleClick} className="btn-link w-28 h-12 bg-white hover:-translate-y-1 m-3 mr-auto border-2 p-2 border-black">
+            {isMutating ? <LoadingSpinner />: <span className='link-inner'> add to cart</span>}
+            
+            
         </button>
     )
 }
