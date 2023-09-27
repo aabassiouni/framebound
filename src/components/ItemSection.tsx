@@ -11,9 +11,9 @@ export default async function ItemSection({ limit, featured }: { limit?: number;
     let products: { rows: Item[] } = { rows: [] }
 
     if (featured) {
-        products = await sql`SELECT * FROM items WHERE featured = true`
+        products = await sql`SELECT * FROM items WHERE featured = true order by id asc`
     } else {
-        products = await sql`SELECT * FROM items`
+        products = await sql`SELECT * FROM items order by id asc`
     }
 
     return (
